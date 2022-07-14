@@ -119,9 +119,15 @@ exports.getPostOfFollowing = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
 
+    //const user = await User.findById(req.user._id).populate("following,"posts");
+    //res.status(200).json({
+    //   success:true,
+    //   following:user.following
+    // })
+
     const posts = await Post.find({
       owner: {
-        $in: user.following,
+        $in: user.following, //Got from stackoverflow //$in takes the input as an array and excute the Post.find on each of the element :)
       },
     }).populate("owner likes comments.user");
 
