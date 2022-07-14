@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const { use } = require("../routes/post");
 
 exports.register = async (req, res) => {
   try {
@@ -163,5 +164,34 @@ exports.updatePassword = async (req, res) => {
       success: true,
       message: "Password updated",
     });
-  } catch (error) {}
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+exports.updateProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+
+    const { name, email } = req.body;
+
+    if (name) {
+      user.name = name;
+    }
+    if (email) {
+      user.email = email;
+    }
+
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Profile Updated",
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
 };
