@@ -15,15 +15,15 @@ exports.register = async (req, res) => {
         .json({ success: false, message: "User already exists" });
     }
 
-    const myCloud = await cloudinary.v2.uploader.upload(avatar, {
-      folder: "avatars",
-    });
-
+    // const myCloud = await cloudinary.v2.uploader.upload(avatar, {
+    //   folder: "avatars",
+    // });
+    console.log("help");
     user = await User.create({
       name,
       email,
       password,
-      avatar: { public_id: myCloud.public_id, url: myCloud.secure_url },
+      // avatar: { public_id: myCloud.public_id, url: myCloud.secure_url },
     });
 
     const token = await user.generateToken();
